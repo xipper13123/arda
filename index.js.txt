@@ -1,0 +1,158 @@
+const Discord = require("discord.js");
+const bot = new Discord.Client();
+const moment = require('moment');
+const client = new Discord.Client();
+const db = require('quick.db');
+require('moment-duration-format');
+
+
+let prefix = ",";//botun �n eki
+let owner = "495654615946100749";// sizin id'niz
+
+bot.on("ready", guild => {
+    bot.user.setActivity('OYNUYOR KISMI', { type: 'WATCHING'  })
+  .then(presence => console.log(`Activity set to ${presence.game ? presence.game.name : 'none'}`))
+  .catch(console.error);
+    console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] BOT: �u an ` + bot.channels.size + ` adet kanala, ` + bot.guilds.size + ` adet sunucuya ve ` + bot.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString() + ` kullan�c�ya hizmet veriliyor!`);
+    console.log("Ba�land�m!")
+});
+
+bot.on("message", message => {
+if (message.content.toLowerCase() === prefix + "avatar�m") {
+message.channel.sendEmbed(new Discord.RichEmbed()
+.setDescription(`Avatar�n�z:`)
+.setImage(`${message.author.avatarURL} `)
+.setColor("RANDOM"));
+   }
+});
+
+bot.on("message", message => {
+    if (message.content.toLowerCase() === prefix + 'kurulum') {
+    if (message.author.id !== `${owner}`) {
+      message.reply('Kurucumun izni olmas� laz�m. Kurucum');
+    } else {
+      message.channel.sendMessage(` :white_check_mark: Gerekli �eyleri ba�ar�l� bir �ekilde kurdum.`).then(msg => {
+      console.log(`Yeniden ba�l�yorum..`);
+      message.guild.createChannel('notech-log');// notech-log ad�nda kanal kuracakt�r.
+    })
+   }
+  }
+});
+
+bot.on('message', msg => {
+  if (msg.content.startsWith(prefix + "yaz")) {
+    let mesaj = msg.content.substring(2 + 3);
+    msg.delete();
+    msg.channel.send(mesaj);
+    }
+    });
+
+bot.on('message', msg => {
+  if (msg.content.startsWith(prefix + "�ekili�")) {
+    msg.channel.send(`�ekili�i Kazanan: ${msg.guild.members.random().displayName}`);
+    }
+    });
+
+bot.on('message', msg => {
+  if (msg.content.startsWith(prefix + "sikayet")) {//sunucu kurucusuna yazd���n�z mesaj� g�nderir.
+    msg.reply("�ikayetiniz Bildirilmi�tir")
+    let mesaj = msg.content.substring(2 + 3);
+    msg.delete();
+    msg.guild.owner.send(`�ikayet Bildiren: **${msg.author.tag}** \n�ikayet: ` + mesaj);
+    }
+    });
+
+bot.on('message', message => {
+if (message.content.toLowerCase() === prefix + "�zl�s�z") {
+    var sans = ["Affetmek ge�mi�i de�i�tirmez ama geIece�in �n�n� a�ar","�nsanIar seninIe konu�may� b�rakt���nda, arkandan konu�maya ba�IarIar","Hayattan korkmay�n �ocuklar;iyi ve do�ru bir �eyler yapt���n�z zaman hayat �yle g�zel ki","Mutlulu�u tatman�n tek �aresi, onu payla�makt�r.","K���k �eylere gere�inden �ok �nem verenler, elinden b�y�k i� gelmeyenlerdir.","Bize yeni d��manlar laz�m. Eskileri hayran�m�z oldular.","Asla vazge�meyin, kaybedenler yaln�zca vazge�enlerdir.","10 kilitli kap�dan daha g�venlidir baban�n evde olu�u.","Sevmek i�in �y�rek� s�rd�rmek i�in �emek� gerek.","Bir insan�n, bir insana verebilece�i en g�zel hediye; ona ay�rabilece�i zamand�r."," Benim neden karde�im yok baba  Seni g�r�nce ikincisine cesaret edemedik.","Kendini Ne Kadar B�y�k G�r�rsen G�r. Bende Sadece G�z�m�n G�rd��� Kadars�n. �tesi yok.","Mutlu olmay� yar�na b�rakmak, kar��ya ge�mek i�in nehrin durmas�n� beklemeye benzer ve bilirsin, o nehir asla durmaz.� Grange"];
+    var sonuc = sans[Math.floor((Math.random() * sans.length))];
+    const embed = new Discord.RichEmbed()
+      .addField(`� � � � � `, `${sonuc}`)
+      .setColor("RANDOM");
+    return message.channel.sendEmbed(embed);
+}
+});
+
+
+bot.on('message', msg => {
+if (msg.content.toLowerCase() === prefix + "futboloyna") {
+msg.channel.send(':soccer :soccer: :goal: :soccer')
+.then(nmsg => nmsg.edit(':soccer: :goal: :soccer:'))
+.then(nmsg => nmsg.edit(':soccer: :goal: :goal:'))
+.then(nmsg => nmsg.edit(':soccer: :goal: :soccer:'))
+.then(nmsg => nmsg.edit(':soccer: :goal:'))
+.then(nmsg => nmsg.edit('**G�zel Ma�t� Bro Bidaha Oynayal�m :)**'));
+}
+});
+
+bot.on("message", message => {
+
+
+  if (message.content.toLowerCase() ===  'sa') {
+    message.reply('Aleyk�m selam!');
+  }
+    if (message.content.toLowerCase() ===  'selamun aleykum') {
+    message.reply('Aleyk�m selam!');
+  }
+
+    if (message.content.toLowerCase() === prefix + 'yenile') {
+    if (message.author.id !== `${owner}`) {
+      message.reply('Bu komudu sadece **Bot Sahibi** kullanabilir!');
+    } else {
+      message.channel.sendMessage(`Yeniden Ba�l�yorum`).then(msg => {
+      console.log(`Yeniden ba�l�yorum..`);
+      process.exit(0);
+    })
+   }
+  }
+
+
+    if (message.content.toLowerCase() === prefix + "sunucubilgi") {
+        const embed = new Discord.RichEmbed()
+            .addField("Sunucu Ad�", message.guild.name, true)
+
+            .addField("Sunucu ID", message.guild.id, true)
+
+            .addField("Sunucu Sahibi", message.guild.owner, true)
+
+            .addField("Toplam �ye Say�s�", message.guild.memberCount, true)
+
+            .addField("AFK S�resi", message.guild.afkTimeout, true)
+
+            .setFooter("Olu�turulma Tarihi " + message.guild.createdAt)
+
+            .setColor("RANDOM")
+
+        return message.channel.sendEmbed(embed)
+    }
+
+    if (message.content.toLowerCase() === prefix + "ping") {
+        const embed = new Discord.RichEmbed()
+            .setColor("RANDOM")
+            .setDescription("Pingim :ping_pong: **" + bot.ping + "** Milisaniye")
+          return message.channel.sendEmbed(embed)
+    }
+
+    if (message.content.toLowerCase() === prefix + "botbilgi") {
+        const embed = new Discord.RichEmbed()
+            .addField("Bot Sahibi", `<@${owner}>`, true)
+
+            .addField("Version", "2.0.1", true)
+
+            .addField("Toplam Sunucu Say�s�", bot.guilds.size, true)
+
+            .addField("Toplam Kullan�c� Say�s�", bot.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString(), true)
+
+            .addField("Toplam Kanal Say�s�", bot.channels.size, true)
+
+            .addField("�al��ma S�resi", moment.duration(bot.uptime).format('D [g�n], H [saat], m [dakika], s [saniye]'), true)
+
+            .addField("Kitapl�k T�r�", "discord.js")
+
+            .setColor("RANDOM")
+
+        return message.channel.sendEmbed(embed)
+    }
+
+
+bot.login(process.env.TOKEN); //de�i�tirmeyin.
